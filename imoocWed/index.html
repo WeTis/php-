@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+</head>
+<body>
+  <p>欢迎管理员：<span id="username"></span></p>
+  <div id="exit">
+      <a href="javascript:void(0);">登出</a>
+  </div>
+  <script src="./js/jquery-1.9.0.js"></script>
+  <script>
+      // 判断用户是否已经登录
+      $.ajax({
+          url: '../lib/islogined.php',
+          dataType: 'json',
+          success: function(res){
+              if(res.status === 90000){
+                  $("#username").text(res.username);
+              }else{
+                  window.location.href= 'login.html';
+              }
+          }
+      })
+
+      // 退出
+      $("#exit").click(function(){
+          $.ajax({
+              url: '../lib/exitlogin.php',
+              dataType: 'json',
+              success: function(res){
+                  window.location.href= 'index.html';
+              }
+          })
+      })
+      // 获取管理员列表
+          $.ajax({
+              url: '../lib/getadminlist.php',
+              type:'get',
+              dataType: 'json',
+              success: function(res){
+                  console.log(res);
+              }
+          })
+  </script>
+</body>
+</html>

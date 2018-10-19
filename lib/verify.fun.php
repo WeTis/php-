@@ -19,7 +19,7 @@ header("Content-Type: text/html;charset=utf-8");
  * @param int $pixelNum        验证码干扰元素点 默认100 传入0 则不显示
  * @param int $lineNum         验证码干扰线 默认5  传入0 则不显示
  */
-function createVerify($stringArray=null,$width = 100,$height = 50,$bgcolor=[255,255,255],$fontSize = 14, $verifyLength = 4,$pixelNum = 100,$lineNum = 5){
+function createVerify($stringArray=null,$width = 100,$height = 50,$bgcolor=[255,255,255],$fontSize = 20, $verifyLength = 4,$pixelNum = 100,$lineNum = 5){
     // 创建画布
     // 判断是否传入字符串
     if($stringArray){
@@ -31,6 +31,8 @@ function createVerify($stringArray=null,$width = 100,$height = 50,$bgcolor=[255,
     }
     $string = explode(',',$string); // 字符串变为数组
     shuffle($string);  // 打乱字符串顺序
+    session_start();
+    $_SESSION['verfiy']=$string[0].$string[1].$string[2].$string[3];
     $img = imagecreatetruecolor($width,$height);
     // 创建颜色
     $colorbg = imagecolorallocate($img,$bgcolor[0],$bgcolor[1],$bgcolor[2]);
@@ -67,5 +69,5 @@ function createVerify($stringArray=null,$width = 100,$height = 50,$bgcolor=[255,
 //    return $path;
 //    return str_replace('C:/xampp/htdocs','http://localhost:8080',str_replace('\\','/',dirname(dirname(__FILE__)).$path));
 }
-createVerify();
+//createVerify();
 

@@ -1,22 +1,154 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .loginBox{
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 350px;
+            height: 230px;
+            border: 1px solid #ccc;
+            margin-left: -175px;
+            margin-top: -115px;
+        }
+        .loginBox .item{
+            position: relative;
+            width: 300px;
+            margin: 20px auto;
+            height: 36px;
+            line-height: 36px;
+        }
+        .item *{
+            float: left;
+        }
+        .item input{
+            width: 190px;
+            height: 20px;
+            line-height: 20px;
+            padding: 5px;
+            border: 1px solid #ccc;
+        }
+        input {
+            -webkit-appearance: none;
+        }
+        .item span{
+            display: inline-block;
+            width: 80px;
+            text-align: right;
+        }
+        .loginBox .verify input{
+            width: 80px;
+        }
+        .loginBox .verify img{
+            margin-left: 5px;
+        }
+        .loginBox .verify{
+            position: relative;
+        }
+        .item  button{
+            float: none;
+            display: block;
+            width: 60px;
+            height: 30px;
+            background-color: dodgerblue;
+            color: #fff;
+            line-height: 30px;
+            margin: 0 auto;
+            border: none;
+        }
+        .item #showPassImg{
+            position: absolute;
+            display: block;
+            top: 50%;
+            margin-top: -10px;
+            right: -15px;
+        }
+       .item  #clickVerify {
+            font-size: 12px;
+            width: 60px;
+            position: absolute;
+            color: dodgerblue;
+           margin-left: 5px;
+           cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-<input type="text" />
-<input type="text" />
-<img src="../index.php" alt="" style="width: 100px;height: 50px;">
+
+<div class="loginBox">
+    <div class="item">
+        <span>姓名：</span>
+        <input type="text" placeholder="输入用户名" value="" id="username"/>
+    </div>
+    <div class="item">
+        <span>密码：</span>
+        <input type="password" id="passwordInput" placeholder="输入密码" value=""/>
+        <img src="./image/hideEye.png" alt="" style="width: 20px;height: 20px;" id="showPassImg">
+    </div>
+    <div class="item verify">
+        <span>验证码：</span>
+        <input type="text" value="" id="Verifyinput" placeholder="输入验证码"/>
+        <img src="../index.php" alt="" style="width: 70px;height: 36px;" id="verifyImg">
+        <span id="clickVerify">刷新验证码</span>
+    </div>
+    <div class="item">
+        <button>登录</button>
+    </div>
+</div>
+
 <script src="./js/jquery-1.9.0.js"></script>
 <script>
-    // $.ajax({
-    //     url: '../index.php',
-    //     success: function(res){
-    //         console.log(res);
-    //         $('img').attr('src',res);
-    //     }
-    // })
+    alert(window.devicePixelRatio);
+    var showEyeB = false;
+    $('#clickVerify').click(function(){
+        console.log(999);
+        $("#verifyImg").attr('src','../index.php?time='+Date.parse( new Date()));
+    })
+    $('#showPassImg').click(function(){
+        if(showEyeB){
+            $('#showPassImg').attr('src','./image/hideEye.png');
+            // 修改密码框属性
+            $('#passwordInput').attr('type','password');
+        }else{
+            $('#showPassImg').attr('src','./image/showEye.png');
+            $('#passwordInput').attr('type','text');
+        }
+        showEyeB = !showEyeB;
+    })
+
+    $('button').click(function(){
+        // 获取密码与用户名
+        var name = $('#username').val();
+        var password = $('#passwordInput').val();
+        var Verifyinput = $('#Verifyinput').val();
+        // console.log(name,password);
+        $.ajax({
+            url: '../lib/login.php',
+            type: 'GET',
+            data: {
+                username: name,
+                password: password,
+                verfiy:Verifyinput
+            },
+            dataType: 'json',
+            success: function(res){
+                console.log(res);
+                alert(res.mes+Verifyinput);
+                if(res.status === 90000){
+                    window.location.href= 'index.html';
+                }
+
+            },
+            fail: function(res){
+                console.log(999);
+            }
+
+        })
+    })
 </script>
 </body>
 </html>

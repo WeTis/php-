@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+   <h3>这是一个注册页面</h3>
+
+   <div>
+       <div>
+           <span>用户名：</span>
+           <input type="text" value="" placeholder="输入用户名"/>
+       </div>
+       <div>
+           <span>密码：</span>
+           <input type="text" value="" placeholder="输入密码" />
+       </div>
+       <div>
+           <span>邮箱：</span>
+           <input type="text" value="" placeholder="输入邮箱" />
+       </div>
+
+       <button>注册</button>
+   </div>
+   <script src="./js/jquery-1.9.0.js"></script>
+   <script>
+       $.ajax({
+           url: '../lib/registered.php',
+           type: 'GET',
+           dataType: 'json',
+           data: {
+               username: "王思雨",
+               password: "w963852741",
+               email: "862140704@qq.com"
+           },
+           success: function(res){
+               console.log(res);
+           },
+           fail: function(res){
+               console.log(res);
+           }
+       })
+   </script>
+</body>
+</html>
