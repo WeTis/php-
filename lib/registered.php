@@ -21,21 +21,29 @@ function registered($phpexcel) {
     $db = new db($phpexcel);
     // 判断用户名是否已经存在
     $adminPassworAndUsername = $db->selectAdminUser($name);
-    print_r($adminPassworAndUsername);
-//    if(!empty($adminPassworAndUsername)){
-//        // 已经存在
-//        $arr = array(
-//          'status' => 90001,
-//            'mes' => '用户名已经存在'
-//        );
-//    }else{
-//        // 不存在
-//       $res = $db->addAdminUser($name,$pass,$email);
-//       if(!empty($res)){
-//           print_r($res);
-//       }
-//
-//    }
+    if(!empty($adminPassworAndUsername)){
+        // 已经存在
+        $arr = array(
+          'status' => 90001,
+            'mes' => '用户名已经存在'
+        );
+    }else{
+        // 不存在
+       $res = $db->addAdminUser($name,$pass,$email);
+        if($res){
+            $arr = array(
+                'status' => 90000,
+                'mes' => '注册成功'
+            );
+        }else{
+            $arr = array(
+                'status' => 90001,
+                'mes' => '注册失败'
+            );
+        }
+
+
+    }
     print_r(json_encode($arr));
 }
 

@@ -102,7 +102,6 @@
 
 <script src="./js/jquery-1.9.0.js"></script>
 <script>
-    alert(window.devicePixelRatio);
     var showEyeB = false;
     $('#clickVerify').click(function(){
         console.log(999);
@@ -137,7 +136,7 @@
             dataType: 'json',
             success: function(res){
                 console.log(res);
-                alert(res.mes+Verifyinput);
+                alert(res.mes);
                 if(res.status === 90000){
                     window.location.href= 'index.html';
                 }

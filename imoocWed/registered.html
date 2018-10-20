@@ -10,37 +10,53 @@
    <div>
        <div>
            <span>用户名：</span>
-           <input type="text" value="" placeholder="输入用户名"/>
+           <input type="text" value="" placeholder="输入用户名" id="name"/>
        </div>
        <div>
            <span>密码：</span>
-           <input type="text" value="" placeholder="输入密码" />
+           <input type="text" value="" placeholder="输入密码" id="password"/>
        </div>
        <div>
            <span>邮箱：</span>
-           <input type="text" value="" placeholder="输入邮箱" />
+           <input type="text" value="" placeholder="输入邮箱"  id="email"/>
        </div>
 
-       <button>注册</button>
+       <button id="button">注册</button>
    </div>
    <script src="./js/jquery-1.9.0.js"></script>
    <script>
-       $.ajax({
-           url: '../lib/registered.php',
-           type: 'GET',
-           dataType: 'json',
-           data: {
-               username: "王思雨",
-               password: "w963852741",
-               email: "862140704@qq.com"
-           },
-           success: function(res){
-               console.log(res);
-           },
-           fail: function(res){
-               console.log(res);
+       $('#button').click(function(){
+
+           // 获取值
+           var name = $("#name").val();
+           var pass = $('#password').val();
+           var email = $("#email").val();
+           console.log(name,pass,email);
+           if(name && pass && email){
+               $.ajax({
+                   url: '../lib/registered.php',
+                   type: 'GET',
+                   dataType: 'json',
+                   data: {
+                       username: name,
+                       password: pass,
+                       email: email
+                   },
+                   success: function(res){
+                       console.log(res);
+                       if(res.status === 90000){
+                           alert("注册成功");
+                       }else{
+                           alert(res.mes);
+                       }
+                   },
+                   fail: function(res){
+                       console.log(res);
+                   }
+               })
            }
-       })
+       });
+
    </script>
 </body>
 </html>

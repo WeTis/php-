@@ -3,11 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <title>主页</title>
+    <style>
+        td{
+            text-align: center;
+        }
+        .showBox{
+            display: none;
+            position: fixed;
+            height: 200px;
+            width: 300px;
+            top: 50%;
+            left: 50%;
+            margin-left: -150px;
+            margin-top: -100px;
+            border: 1px solid #cccccc;
+            background-color: #ffffff;
+        }
+    </style>
 </head>
 <body>
   <p>欢迎管理员：<span id="username"></span></p>
   <div id="exit">
       <a href="javascript:void(0);">登出</a>
+  </div>
+
+  <div class="userList">
+      <table class="list">
+          <tr>
+              <th>id</th>
+              <th>用户名</th>
+              <th>用户密码</th>
+              <th>用户邮箱</th>
+              <th>操作</th>
+          </tr>
+      </table>
+  </div>
+  <div class="showBox">
+      <div >
+          <span>用户名：</span>
+          <input type="text" value="" class="nameinput" />
+      </div>
+      <div>
+          <span>密码：</span>
+          <input type="text" value="" class="passinput"/>
+      </div>
+      <div>
+          <span>邮箱：</span>
+          <input type="text" value="" class="emailinput" />
+      </div>
+
+      <button class="submitButton">确认修改</button>
+      <button class="closeButton">取消</button>
   </div>
   <script src="./js/jquery-1.9.0.js"></script>
   <script>
@@ -41,8 +87,60 @@
               dataType: 'json',
               success: function(res){
                   console.log(res);
+                  if(res.status === 90000){
+                      var list = res.params;
+
+                      for(var i = 0; i < list.length; i++){
+                          var dom = '<tr><td>'+list[i].id+'</td><td>'+list[i].username+'</td><td>'+list[i].password+'</td><td>'+list[i].emaill+
+                              '</td<td><a href="javascript:void(0)" data-id="'+list[i].id+'" data-name="'+list[i].username+'" data-pass="'+list[i].password+
+                              '" data-email="'+list[i].emaill+'">修改</a></td></tr>'
+                          $('.list').append(dom);
+                      }
+                  }
               }
           })
+      // 修改管理员信息
+      $('.list').on('click','a',function(e){
+          // 获取用户信息
+          var id = $(this).attr("data-id");
+          var name = $(this).attr("data-name");
+          var pass = $(this).attr("data-pass");
+          var email = $(this).attr("data-email");
+
+          $(".nameinput").val(name);
+          $(".passinput").val(pass);
+          $(".emailinput").val(email);
+
+          $(".showBox").show();
+
+          $(".submitButton").click(function(){
+              var nameS = $(".nameinput").val();
+              var passS = $(".passinput").val();
+              var emailS = $(".emailinput").val();
+
+              $.ajax({
+                  url: '../lib/modifyAdminUser.php',
+                  type: "POST",
+                  data:{
+                    id: id,
+                      name: nameS,
+                      pass: passS,
+                      email: emailS
+                  },
+                  dataType: "json",
+                  success: function(res){
+                      console.log(res);
+                  },
+                  fail: function(res){
+                      console.log(res);
+                  }
+              })
+          })
+
+      })
+      $(".closeButton").click(function(){
+          $(".showBox").hide();
+      })
   </script>
 </body>
 </html>

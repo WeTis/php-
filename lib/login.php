@@ -15,15 +15,23 @@ function login($username,$password,$verfiy,$phpexcel){
         $db = new db($phpexcel);
         $adminPassworAndUsername = $db->selectAdminUser($username,$password);
         if(!empty($adminPassworAndUsername)){
+             $freez = $adminPassworAndUsername[0]["freez"];
+             if($freez == 1){
+                // 缓存一个令牌确定登录成功 设置cookie
+                setcookie('username',$username,0);
+                $token = md5($username.'imooc');
+                setcookie("tokenimooc",$token,0);
+                $str = array(
+                    'status'=>90000,
+                    'mes' => "登录成功"
+                );
 
-            // 缓存一个令牌确定登录成功 设置cookie
-            setcookie('username',$username,0);
-            $token = md5($username.'imooc');
-            setcookie("tokenimooc",$token,0);
-            $str = array(
-                'status'=>90000,
-                'mes' => "登录成功"
-            );
+             }else if( $freez == 2){
+                 $str = array(
+                     'status'=>90001,
+                     'mes' => "账号已被冻结"
+                 );
+             }
         }else{
             $str = array(
                 'status'=>90001,
@@ -33,7 +41,7 @@ function login($username,$password,$verfiy,$phpexcel){
     }else{
         $str = array(
             'status'=>90001,
-            'mes' => "验证码错误".$_SESSION['verfiy']
+            'mes' => "验证码错误"
         );
     }
 

@@ -43,22 +43,20 @@ class db{
     public function getResult($sql){
         // sql语句查询
        $resource = mysqli_query($this->conn,$sql);
-       print_r($resource->num_rows);
+        $arr = [];
        if($resource->num_rows > 0){
            $num = mysqli_num_rows($resource);  // 返回查询的函数
-           $arr = [];
+
            for($i = 0; $i < $num; $i++){
                $arr[] = mysqli_fetch_assoc($resource);
            }
-       }
-       if(!empty($arr)){
-           echo '成功';
-           return $arr;
+           if(!empty($arr)){
+               return $arr;
+           }
        }else{
-           echo '失败';
-           print_r(mysqli_fetch_assoc($resource));
-           return mysqli_fetch_assoc($resource);
+           return $arr;
        }
+
 
     }
 
@@ -69,7 +67,6 @@ class db{
      */
     function getResultadd($sql){
         $resource = mysqli_query($this->conn,$sql);
-        print_r($resource);
         if($resource == true){
            $isSuccess = true;
         }else{
@@ -78,6 +75,19 @@ class db{
         return $isSuccess;
     }
 
+    /**
+     * 判断sql是否更新成功
+     * @param $sql
+     * @return bool
+     */
+    function upDateSql($sql){
+        $resource = mysqli_query($this->conn,$sql);
+        if(mysqli_affected_rows($this->conn) > 0){
+            return true;
+        }else{
+            return false;
+        }
+    }
     /**
      * 查询管理员
      * @param null $name   管理员名字 (默认不存在)  如果用户名不存在则是查询管理员列表
@@ -93,7 +103,7 @@ class db{
             $sql = 'SELECT username FROM user WHERE username= "'.$name.'"';
         }else {
             // 判断管理员名字与密码是否相对应
-            $sql = 'SELECT username,password FROM user WHERE username="'.$name.'" AND password="'.md5($password).'"';
+            $sql = 'SELECT username,password,freez FROM user WHERE username="'.$name.'" AND password="'.md5($password).'"';
         }
 
         $res = self::getResult($sql);
@@ -101,11 +111,65 @@ class db{
         return $res;
     }
 
+    /**
+     * 添加管理员（注册）
+     * @param $name
+     * @param $pass
+     * @param $email
+     * @return bool
+     */
     public function addAdminUser($name,$pass,$email){
         $sql = 'INSERT INTO user(username,password,emaill) VALUES ("'.$name.'","'.$pass.'","'.$email.'")';
         $res = self::getResultadd($sql);
         return $res;
     }
 
+    /**
+     * 修改更新用户信息
+     * @param $id
+     * @param $name
+     * @param $pass
+     * @param $email
+     * @return bool
+     */
+    public function modifyAdminUser($id,$name,$pass,$email){
+        $sql = 'UPDATE user SET username="'.$name.'",password="'.$pass.'",emaill="'.$email.'" WHERE id='.$id;
+        $res = self::upDateSql($sql);
+        return $res;
+    }
 
+    /**
+     * 删除用户
+     * @param $id
+     * @return bool
+     */
+    public function deleteAdminUser($id){
+        $sql = 'DELETE FROM user WHERE id = '.$id;
+        $res = self::upDateSql($sql);
+
+        return $res;
+    }
+
+    /**
+     * 冻结用户
+     * @param $id
+     * @return bool
+     */
+    public function freezeAdminUser($id){
+        $sql = 'UPDATE user SET freez=2 WHERE id = '.$id;
+        $res = self::upDateSql($sql);
+        return $res;
+    }
+
+    /**
+     * 解冻用户
+     * @param $id
+     * @return bool
+     */
+    public function unFreezeAdminUser($id){
+        $sql = 'UPDATE user SET freez=1 WHERE id = '.$id;
+        $res = self::upDateSql($sql);
+
+        return $res;
+    }
 }
