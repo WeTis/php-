@@ -172,4 +172,21 @@ class db{
 
         return $res;
     }
+
+    /**
+     * 用户自己修改密码
+     * @param $name
+     * @param $pass
+     * @param $newpass
+     * @return bool
+     */
+    public function modifyPassword($name,$pass,$newpass){
+        $sql = 'UPDATE user SET password="'.$newpass.'" WHERE username="'.$name.'" AND password="'.$pass.'"';
+        $res = self::upDateSql($sql);
+        return $res;
+    }
+
+    public function findPassword(){
+
+    }
 }
