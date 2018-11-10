@@ -189,4 +189,61 @@ class db{
     public function findPassword(){
 
     }
+
+    /**
+     * 添加文章
+     * @param $params
+     * @return bool
+     */
+    public function addArticle($params){
+        $sql = 'INSERT INTO author( `title`, `authorName`, `abstract`,  `content`, `createTime`) VALUES ("'.$params["title"].'","'.$params["authorName"].'","'.$params["abstract"].'","'.$params["content"].'","'.$params["createTime"].'")';
+        $res = self::getResultadd($sql);
+        return $res;
+    }
+
+    /**
+     * 更新文章
+     * @param $params
+     * @return bool
+     */
+    public function upDateArticle($params) {
+        $sql = 'UPDATE author SET title="'.$params["title"].'",authorName="'.$params["authorName"].'",abstract="'.$params["abstract"].'",content="'.$params["content"].'",createTime="'.$params["createTime"].'" WHERE id='.$params["unmId"];
+        $res = self::upDateSql($sql);
+        return $res;
+    }
+
+    /**
+     * 删除文章
+     * @param $params
+     * @return bool
+     */
+    public function deleteArticle($params){
+        $sql = 'DELETE FROM author WHERE id = '.$params["unmId"];
+        $res = self::upDateSql($sql);
+        return $res;
+    }
+
+    /**
+     * $name = null,$author=null,$time=null
+     * @param $params
+     * @return array
+     */
+    public function getArticleList($params){
+        if(empty($params["title"]) == 1 && empty($params["author"]) == 1 && empty($params["time"]) == 1){
+            // 查询所有文章
+            $sql = 'SELECT * FROM author';
+        }else if($params["title"]){
+            // 根据标题查询
+            $sql = 'SELECT * FROM author WHERE title= "'.$params["title"].'"';
+        }else if($params["author"]) {
+            // 根据作者查询
+            $sql = 'SELECT * FROM author WHERE authorName="'.$params["author"].'"';
+        }else if($params["time"]){
+            // 根据时间查询 > 大于
+            $sql = 'SELECT * FROM author WHERE createTime ="'.$params["time"].'" OR createTime > "'.$params["time"].'"';
+        }
+
+        $res = self::getResult($sql);
+        return $res;
+    }
 }

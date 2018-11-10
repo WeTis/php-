@@ -36,7 +36,6 @@ function isLogined($phpexcel){
                     "mes"=> "token不相同"
                 );
             }
-
         }else{
             // 不存在
             $resquset  = array(
