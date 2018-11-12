@@ -223,27 +223,117 @@ class db{
         return $res;
     }
 
+
     /**
+     * 根据不同传入的值获取文章列表
      * $name = null,$author=null,$time=null
      * @param $params
      * @return array
      */
     public function getArticleList($params){
-        if(empty($params["title"]) == 1 && empty($params["author"]) == 1 && empty($params["time"]) == 1){
+        if(empty($params["title"]) == 1 && empty($params["author"]) == 1 && empty($params["time"]) == 1 && empty($params["articleId"])){
             // 查询所有文章
-            $sql = 'SELECT * FROM author';
+            $sql = 'SELECT * FROM author LIMIT '.($params["page"]-1 ) * 10 .',10';
         }else if($params["title"]){
             // 根据标题查询
-            $sql = 'SELECT * FROM author WHERE title= "'.$params["title"].'"';
+            $sql = 'SELECT * FROM author WHERE title= "'.$params["title"].'"  LIMIT '.($params["page"]-1 ) * 10 .',10';
         }else if($params["author"]) {
             // 根据作者查询
-            $sql = 'SELECT * FROM author WHERE authorName="'.$params["author"].'"';
+            $sql = 'SELECT * FROM author WHERE authorName="'.$params["author"].'" LIMIT '.($params["page"]-1 ) * 10 .',10';
         }else if($params["time"]){
             // 根据时间查询 > 大于
-            $sql = 'SELECT * FROM author WHERE createTime ="'.$params["time"].'" OR createTime > "'.$params["time"].'"';
+            $sql = 'SELECT * FROM author WHERE createTime ="'.$params["time"].'" OR createTime > "'.$params["time"].'" LIMIT '.($params["page"]-1 ) * 10 .',10';
+        }else if($params["articleId"]){
+            $sql = 'SELECT * FROM author WHERE id='.$params["articleId"];
         }
-
         $res = self::getResult($sql);
         return $res;
+    }
+
+    /**
+     * 添加评论
+     * @param $params
+     *  @return array
+     */
+    public function addComment($params){
+        $sql = 'INSERT INTO article_comments(`articleId`,`userId`,`text`,`createTime`,`loveNum`) VALUES ('.$params["articleId"].','.$params["userId"].',"'.$params["text"].'",'.$params["createTime"].','.$params["loveNum"].')';
+        $res = self::getResultadd($sql);
+        return $res;
+    }
+
+    /**
+     * 获取评论 通过文章id、用户id、 待定
+     * @param $params
+     *  @return array
+     */
+
+    public function getComment($params){
+        if(empty($params["articleId"]) != 1){
+            $sql = 'SELECT * FROM article_comments WHERE articleId='.$params["articleId"] .' LIMIT '.($params["page"]-1)*10 . ',10';
+
+        }else if(empty($params["userId"]) != 1) {
+            $sql = 'SELECT * FROM article_comments WHERE userId=' . $params["userId"] . ' LIMIT ' . ($params["page"] - 1) * 10 . ',10';
+        }
+        $res = self::getResult($sql);
+        return $res;
+    }
+
+    /**
+     * 删除评论
+     * @param $params
+     * @return bool
+     */
+    public function deleteComment($params){
+        if(empty($params["articleId"]) != 1 && empty($params["userId"]) != 1 && empty($params['commentId']) != 1){
+            $sql = 'DELETE FROM article_comments WHERE articleId='.$params["articleId"].' AND userId='.$params["userId"].' AND id='.$params['commentId'];
+        }else{
+            $sql = 'DELETE FROM article_comments WHERE userId='.$params["userId"];
+        }
+
+        $res = self::upDateSql($sql);
+        return $res;
+    }
+
+    /**
+     * 评论添加点赞数
+     * @param $params
+     * @return bool
+     */
+    public function addCommentLikeNum($params){
+        $sql = 'UPDATE article_comments SET loveNum='. $params["commentLoveNum"].' WHERE id = '.$params['commentId'];
+        $res = self::getResultadd($sql);
+        return $res;
+    }
+
+    /**
+     * 获取单个评论点赞数
+     * @param $params
+     * @return array
+     */
+    public function getCommentLikeNum($params) {
+        $sql = 'SELECT loveNum FROM article_comments WHERE id='.$params['commentId'];
+        $res = self::getResult($sql);
+        return $res;
+    }
+    /**
+     * 评论点赞的用户，文章，评论相关信息
+     * @param $params
+     * @return bool
+     */
+    public function addCommentLikeUser($params) {
+        $sql = 'INSERT INTO comment_like_user(`commentId`,`userId`,`articleId`) VALUES ('.$params["commentId"].','.$params["userId"].','.$params["articleId"].')';
+        $res = self::getResultadd($sql);
+        return $res;
+    }
+
+    /**
+     * 根据用户id 以及评论id 判断此评论用户是否已经点赞
+     * @param $params
+     * @return array
+     */
+    public function findCommentByUserIdAndCommentId($params){
+       $sql = 'SELECT * FROM comment_like_user WHERE commentId='.$params["commentId"].' AND userId='.$params["userId"];
+       $res = self::getResult($sql);
+       return $res;
     }
 }
