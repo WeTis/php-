@@ -7,7 +7,7 @@
  */
 require_once "./db.fun.php";
 require_once "../configs/dbconfig.php";
-
+require_once './isloginedFn.php';
 function getAdminList($phpexcel){
     $db = new db($phpexcel);
     $res = $db->selectAdminUser();
@@ -28,4 +28,13 @@ function getAdminList($phpexcel){
     print_r(json_encode($arr));
 }
 
-getAdminList($phpexcel);
+
+if(isLogined($phpexcel)){
+    getAdminList($phpexcel);
+}else{
+    $arr = array(
+        'status' => 90002,
+        'mes' => "登录状态有误"
+    );
+    print_r(json_encode($arr));
+}

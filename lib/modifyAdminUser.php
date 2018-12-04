@@ -7,7 +7,7 @@
  */
 require_once '../configs/dbconfig.php';
 require_once './db.fun.php';
-
+require_once './isloginedFn.php';
 function Modify($phpexcel,$id,$name,$pass,$email){
     $db = new db($phpexcel);
     $res = $db->modifyAdminUser($id,$name,md5($pass),$email);
@@ -25,4 +25,12 @@ function Modify($phpexcel,$id,$name,$pass,$email){
     print_r(json_encode($arr));
 }
 
-Modify($phpexcel,$_POST['id'],$_POST['name'],$_POST['pass'],$_POST['email']);
+if(isLogined($phpexcel)){
+    Modify($phpexcel,$_POST['id'],$_POST['name'],$_POST['pass'],$_POST['email']);
+}else{
+    $arr = array(
+        'status' => 90002,
+        'mes' => "登录状态有误"
+    );
+    print_r(json_encode($arr));
+}

@@ -6,7 +6,7 @@
  * Time: 14:11
  */
 header("Content-Type: text/html;charset=utf-8");
-
+//header("Access-Control-Allow-Origin: *"); // 允许任意域名发起的跨域请求
 
 /**
  * 创建验证码图片

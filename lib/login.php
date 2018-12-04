@@ -5,6 +5,8 @@
  * Date: 2018/10/17
  * Time: 10:27
  */
+
+//header("Access-Control-Allow-Origin: *"); // 允许任意域名发起的跨域请求
 require_once "./db.fun.php";
 require_once '../configs/dbconfig.php';
 function login($username,$password,$verfiy,$phpexcel){
@@ -41,7 +43,9 @@ function login($username,$password,$verfiy,$phpexcel){
     }else{
         $str = array(
             'status'=>90001,
-            'mes' => "验证码错误"
+            'mes' => "验证码错误",
+            'mm' => $_SESSION['verfiy'],
+            'input' => $verfiy
         );
     }
 

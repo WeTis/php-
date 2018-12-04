@@ -10,7 +10,7 @@ require_once "./lib/verify.fun.php";
 require_once "./lib/db.fun.php";
 require_once "./configs/dbconfig.php";
 header("Content-Type: text/html;charset=utf-8");
-
+//header("Access-Control-Allow-Origin: *"); // 允许任意域名发起的跨域请求
 createVerify();
 //// 实例化数据库操作类
 //$db = new db($phpexcel);
