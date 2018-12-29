@@ -3,12 +3,12 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,height=device-height, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
     <title>h5build</title>
     <style type="text/css">
         html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,p,blockquote,pre,hr,figure,table,caption,th,td,form,fieldset,legend,input,button,textarea,menu{margin:0;padding:0;}
         html,body,form,fieldset,p,div,h1,h2,h3,h4,h5,h6{-webkit-text-size-adjust:none}
-        html{background-color: #ffffff;    overflow-x: hidden;}
+        html{background-color: #ffffff;overflow-x: hidden;}
         body{font-family:"微软雅黑",arial,sans-serif; background:#e6e6e6;}
         header,footer,section,article,aside,nav,hgroup,address,figure,figcaption,menu,details{display:block;}
         table{border-collapse:collapse;border-spacing:0;}
@@ -37,9 +37,82 @@
         .WT-view{
             overflow: hidden;
         }
-        </style>
+        img{
+            max-width: 100%;
+        }
+        html{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            font-size: 37.5px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+        .main{
+            position: relative;
+            width: 10rem;
+            margin: 0 auto;
+        }
+        /*基础css*/
+        /*顶部导航基础样式*/
+        #my-node .WT-topNav {
+            width: 10rem;
+            height: 1.06rem;
+            line-height: 1.06rem;
+            background-color: #FFF;
+            position: relative;
+        }
+        #my-node .WT-topNav .WT-left-btn {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            padding: 0 10px;
+        }
+        #my-node .WT-topNav .WT-left-btn img {
+            display: block;
+        }
+        #my-node .WT-topNav .WT-right-btn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            padding: 0 10px;
+        }
+        #my-node .WT-topNav .WT-right-btn img {
+            display: block;
+        }
+        #my-node .WT-topNav .WT-title {
+            height: 100%;
+            width: 100%;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+    </style>
+    <script>
+        compterHtmlSize();
+        function compterHtmlSize(){
+            var scale = document.documentElement.clientWidth || document.body.clientWidth;
+            var scaleH = document.documentElement.clientHeight || document.body.clientHeigth;
+            var scaleJ = 375/667 * scaleH;
+            if(scaleJ > scale){
+                scale = scale;
+            }else{
+                scale = scaleJ;
+            }
+            document.documentElement.style.fontSize = scale/10 + 'px';
+        }
+    </script>
 </head>
 <body>
-  {content}
+  <div class="main">
+      {content}
+  </div>
+
 </body>
 </html>
