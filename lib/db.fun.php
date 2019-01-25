@@ -169,7 +169,6 @@ class db{
     public function unFreezeAdminUser($id){
         $sql = 'UPDATE user SET freez=1 WHERE id = '.$id;
         $res = self::upDateSql($sql);
-
         return $res;
     }
 
@@ -233,21 +232,35 @@ class db{
     public function getArticleList($params){
         if(empty($params["title"]) == 1 && empty($params["author"]) == 1 && empty($params["time"]) == 1 && empty($params["articleId"])){
             // 查询所有文章
-            $sql = 'SELECT * FROM author LIMIT '.($params["page"]-1 ) * 10 .',10';
+//            $sql = 'SELECT * FROM author LIMIT '.($params["page"]-1 ) * 10 .',10';
+             $sql = 'SELECT SQL_CALC_FOUND_ROWS * FROM author LIMIT '.($params["page"]-1 ) * 10 .',10';
+
+
         }else if($params["title"]){
             // 根据标题查询
-            $sql = 'SELECT * FROM author WHERE title= "'.$params["title"].'"  LIMIT '.($params["page"]-1 ) * 10 .',10';
+            $sql = 'SELECT SQL_CALC_FOUND_ROWS * FROM author WHERE title= "'.$params["title"].'"  LIMIT '.($params["page"]-1 ) * 10 .',10';
         }else if($params["author"]) {
             // 根据作者查询
-            $sql = 'SELECT * FROM author WHERE authorName="'.$params["author"].'" LIMIT '.($params["page"]-1 ) * 10 .',10';
+            $sql = 'SELECT SQL_CALC_FOUND_ROWS * FROM author WHERE authorName="'.$params["author"].'" LIMIT '.($params["page"]-1 ) * 10 .',10';
         }else if($params["time"]){
             // 根据时间查询 > 大于
-            $sql = 'SELECT * FROM author WHERE createTime ="'.$params["time"].'" OR createTime > "'.$params["time"].'" LIMIT '.($params["page"]-1 ) * 10 .',10';
+            $sql = 'SELECT SQL_CALC_FOUND_ROWS * FROM author WHERE createTime ="'.$params["time"].'" OR createTime > "'.$params["time"].'" LIMIT '.($params["page"]-1 ) * 10 .',10';
         }else if($params["articleId"]){
-            $sql = 'SELECT * FROM author WHERE id='.$params["articleId"];
+            $sql = 'SELECT SQL_CALC_FOUND_ROWS * FROM author WHERE id='.$params["articleId"];
         }
         $res = self::getResult($sql);
-        return $res;
+        $sql = 'SELECT FOUND_ROWS()';
+        $num = mysqli_query($this->conn,$sql);
+        if($rs=mysqli_fetch_array($num)){
+            $total=$rs[0];
+        }else{
+            $total=0;
+        }
+        $arr = array(
+            "nums" => $total,
+            "res" => $res,
+        );
+        return $arr;
     }
 
     /**

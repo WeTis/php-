@@ -25,4 +25,4 @@ function unfreez($phpexcel,$id){
 
     print_r(json_encode($arr));
 }
-unfreez($phpexcel,$_POST('id'));
+unfreez($phpexcel,$_POST['id']);

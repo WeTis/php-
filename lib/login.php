@@ -12,6 +12,7 @@ require_once '../configs/dbconfig.php';
 function login($username,$password,$verfiy,$phpexcel){
     session_start();
     // 判断验证码是否正确
+//    var_dump($_POST);
     if(!strcasecmp($_SESSION['verfiy'],$verfiy)){
         // 判断输入的用户名和密码是否正确
         $db = new db($phpexcel);
@@ -49,9 +50,7 @@ function login($username,$password,$verfiy,$phpexcel){
         );
     }
 
-
-
     print_r(json_encode($str));
 }
 
-login($_GET['username'],$_GET['password'],$_GET['verfiy'],$phpexcel);
+login($_POST['username'],$_POST['password'],$_POST['verfiy'],$phpexcel);

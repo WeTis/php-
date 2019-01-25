@@ -27,7 +27,8 @@ function getArticleList($phpexcel) {
     // 连接数据库
     $db = new db($phpexcel);
     $res = $db->getArticleList($params);
-    if(!empty($res)){
+//    echo $res;
+    if(!empty($res['res'])){
 
         if($articleId){
             $resComment = $db->getComment($params);
@@ -65,7 +66,8 @@ function getArticleList($phpexcel) {
             $arr = array(
                 "status" => 90000,
                 "mes" => "获取成功",
-                "params" => $res
+                "params" => $res['res'],
+                'nums' => $res['nums']
             );
         }
     }else{
