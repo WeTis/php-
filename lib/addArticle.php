@@ -16,6 +16,12 @@ function registered($phpexcel) {
     $abstract = $_POST["abstract"];
 //    $unmId = $_POST['unmId'];
     $content = $_POST['content'];
+
+    $authorImg = $_POST['authorImg'];
+    $articleType = $_POST['articleType'];
+    $audioSrc = $_POST['audioSrc'];
+    $mainImg = $_POST['mainImg'];
+
     $createTime = time();
 
     $params = array(
@@ -23,6 +29,10 @@ function registered($phpexcel) {
         'title' => $title,
         'abstract' => $abstract,
         'content' => $content,
+        'authorImg' => $authorImg,
+        'articleType' => $articleType,
+        'audioSrc' => $audioSrc,
+        'mainImg' => $mainImg,
         'createTime' => $createTime
     );
     // 连接数据库
