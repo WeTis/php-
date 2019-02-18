@@ -9,10 +9,14 @@
 //header("Access-Control-Allow-Origin: *"); // 允许任意域名发起的跨域请求
 require_once "./db.fun.php";
 require_once '../configs/dbconfig.php';
+
+//session_start();
+// 判断验证码是否正确
+//var_dump($_SESSION);
+
 function login($username,$password,$verfiy,$phpexcel){
-    session_start();
-    // 判断验证码是否正确
-//    var_dump($_POST);
+
+//    echo $_SESSION['verfiy'];
     if(!strcasecmp($_SESSION['verfiy'],$verfiy)){
         // 判断输入的用户名和密码是否正确
         $db = new db($phpexcel);

@@ -31,7 +31,7 @@ function createVerify($stringArray=null,$width = 100,$height = 50,$bgcolor=[255,
     }
     $string = explode(',',$string); // 字符串变为数组
     shuffle($string);  // 打乱字符串顺序
-    session_start();
+//    session_start();
     $_SESSION['verfiy']=$string[0].$string[1].$string[2].$string[3];
     $img = imagecreatetruecolor($width,$height);
     // 创建颜色
@@ -64,8 +64,8 @@ function createVerify($stringArray=null,$width = 100,$height = 50,$bgcolor=[255,
     imagejpeg($img);
 //    imagejpeg($img,dirname(dirname(__FILE__)).$path);
     // 销毁
-    imagedestroy($img);
-
+//    imagedestroy($img);
+//    var_dump( $_SESSION['verfiy']);
 //    return $path;
 //    return str_replace('C:/xampp/htdocs','http://localhost:8080',str_replace('\\','/',dirname(dirname(__FILE__)).$path));
 }

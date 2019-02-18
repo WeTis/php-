@@ -10,7 +10,7 @@ require_once "./db.fun.php";
 require_once '../configs/dbconfig.php';
 function isLogined($phpexcel){
      //获取cookie
-
+//    session_start();
     if(isset($_COOKIE['username'])&& isset($_COOKIE['tokenimooc']) ){
         // 判断cookie是否正确
         $username = $_COOKIE['username'];
@@ -48,7 +48,8 @@ function isLogined($phpexcel){
         $resquset  = array(
             "status"=>90001,
             "username" => '未登录',
-            "mes"=> "cookie不存在"
+            "mes"=> "cookie不存在",
+            'mm' => $_SESSION['verfiy'],
         );
     }
     print_r(json_encode($resquset));
