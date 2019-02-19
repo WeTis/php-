@@ -208,7 +208,9 @@ VALUES ("'.$params["title"].'","'.$params["authorName"].'","'.$params["abstract"
      * @return bool
      */
     public function upDateArticle($params) {
-        $sql = 'UPDATE author SET title="'.$params["title"].'",authorName="'.$params["authorName"].'",abstract="'.$params["abstract"].'",content="'.$params["content"].'",createTime="'.$params["createTime"].'" WHERE id='.$params["unmId"];
+//        $sql = 'UPDATE author SET title="'.$params["title"].'",authorName="'.$params["authorName"].'",abstract="'.$params["abstract"].'",content="'.$params["content"].'",createTime="'.$params["createTime"].'" WHERE id='.$params["unmId"];
+
+        $sql = 'UPDATE author SET title="'.$params["title"].'",authorName="'.$params["authorName"].'",abstract="'.$params["abstract"].'",content="'.$params["content"].'",createTime="'.$params["createTime"].'",authorImg="'.$params["authorImg"].'",articleType="'.$params["articleType"].'",audioSrc="'.$params["audioSrc"].'",mainImg="'.$params["mainImg"].'"WHERE id='.$params["unmId"];
         $res = self::upDateSql($sql);
         return $res;
     }

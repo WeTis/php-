@@ -36,16 +36,17 @@ function getArticleList($phpexcel) {
 
 
                 for($i = 0; $i < sizeof($resComment); $i++){
-                    print_r($resComment[$i]["id"]);
+//                    print_r($resComment[$i]["id"]);
                     // 查询该评论是否已经被当前用户点赞
                     $paramsC = array(
                         "commentId" => $resComment[$i]["id"],
                         "userId" => $userId
                     );
-                    $resNu = $db ->findCommentByUserIdAndCommentId($paramsC);
-                    if($resNu){
-                        $resComment[$i]["loved"] = true;
-                    }
+//                    $resNu = $db ->findCommentByUserIdAndCommentId($paramsC);
+//                    print_r($resNu);
+//                    if($resNu){
+//                        $resComment[$i]["loved"] = true;
+//                    }
                 }
                 $arr = array(
                     "status" => 90000,
@@ -63,6 +64,15 @@ function getArticleList($phpexcel) {
             }
 
         }else{
+
+            for($j = 0; $j < sizeof($res['res']); $j++){
+                $pa = array(
+                    "articleId" => $res['res'][$j]['id'],
+                    "userId" => $userId
+                );
+                $resComment = $db->getComment($pa);
+                $res['res'][$j]["commonnn"] = $resComment;
+            }
             $arr = array(
                 "status" => 90000,
                 "mes" => "获取成功",
