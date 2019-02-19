@@ -15,7 +15,8 @@ function registered($phpexcel) {
     $title = $_POST["title"];
     $abstract = $_POST["abstract"];
 //    $unmId = $_POST['unmId'];
-    $content = $_POST['content'];
+    $content =     preg_replace('/\"/', "'weitin", $_POST['content']);
+
 
     $authorImg = $_POST['authorImg'];
     $articleType = $_POST['articleType'];
@@ -23,7 +24,6 @@ function registered($phpexcel) {
     $mainImg = $_POST['mainImg'];
 
     $createTime = time();
-
     $params = array(
         'authorName' => $authorName,
         'title' => $title,

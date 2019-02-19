@@ -196,7 +196,8 @@ class db{
      */
     public function addArticle($params){
         $sql = 'INSERT INTO author( `title`, `authorName`, `abstract`,  `content`, `createTime`,`authorImg`,`articleType`,`audioSrc`,`mainImg`) 
-VALUES ("'.$params["title"].'","'.$params["authorName"].'","'.$params["abstract"].'",'.$params["content"].',"'.$params["createTime"].'","'.$params["authorImg"].'",'.$params["articleType"].',"'.$params["audioSrc"].'","'.$params["mainImg"].'")';
+VALUES ("'.$params["title"].'","'.$params["authorName"].'","'.$params["abstract"].'","'.$params["content"].'","'.$params["createTime"].'","'.$params["authorImg"].'",'.$params["articleType"].',"'.$params["audioSrc"].'","'.$params["mainImg"].'")';
+//       print_r($sql);
         $res = self::getResultadd($sql);
         return $res;
     }
