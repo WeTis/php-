@@ -35,6 +35,8 @@ function registered($phpexcel) {
         'mainImg' => $mainImg,
         'createTime' => $createTime
     );
+
+//    var_dump($params);
     // 连接数据库
     $db = new db($phpexcel);
     $res = $db->addArticle($params);

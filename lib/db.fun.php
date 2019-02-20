@@ -296,6 +296,21 @@ VALUES ("'.$params["title"].'","'.$params["authorName"].'","'.$params["abstract"
     }
 
     /**
+     * 获取评论 通过文章id、用户id、 待定
+     * @param $params
+     *  @return array
+     */
+
+    public function getCommentAll($params){
+        if(empty($params["articleId"]) != 1){
+            $sql = 'SELECT * FROM article_comments WHERE articleId='.$params["articleId"];
+
+        }
+        $res = self::getResult($sql);
+        return $res;
+    }
+
+    /**
      * 删除评论
      * @param $params
      * @return bool

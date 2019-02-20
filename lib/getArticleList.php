@@ -68,9 +68,8 @@ function getArticleList($phpexcel) {
             for($j = 0; $j < sizeof($res['res']); $j++){
                 $pa = array(
                     "articleId" => $res['res'][$j]['id'],
-                    "userId" => $userId
                 );
-                $resComment = $db->getComment($pa);
+                $resComment = $db->getCommentAll($pa);
                 $res['res'][$j]["commonnn"] = $resComment;
             }
             $arr = array(
