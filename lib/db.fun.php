@@ -368,4 +368,45 @@ VALUES ("'.$params["title"].'","'.$params["authorName"].'","'.$params["abstract"
        $res = self::getResult($sql);
        return $res;
     }
+
+    /**
+     * 新增微信用户
+     * @param $params 微信openId 用户信息
+     * @return bool
+     */
+    public function addAppUser($params){
+
+        if(empty($params['userName']) != 1){
+            $sql = 'INSERT INTO app_user(openId,userName,userImg,hasInfo) VALUES ("'.$params["openId"].'","'.$params["userName"].'","'.$params["userImg"].'",1)';
+        }else{
+            $sql = 'INSERT INTO app_user(openId,hasInfo) VALUES ("'.$params["openId"].'",2)';
+        }
+
+        $res = self::getResultadd($sql);
+        return $res;
+    }
+
+    /**
+     * 判断微信用户是否存在
+     * @param $openId  微信openId
+     * @return array
+     */
+    public function isHasUser($openId){
+        $sql = 'SELECT openId FROM app_user WHERE openId= "'.$openId.'"';
+        $res = self::getResult($sql);
+        return $res;
+    }
+
+    /**
+     * 更新微信用户信息
+     * @param $params
+     * @return bool
+     */
+    public function updateAppUser($params){
+        $sql = 'UPDATE app_user SET userName="'.$params["userName"].'",userImg="'.$params["userImg"].'",hasInfo= 1 WHERE openId='.$params["openId"];
+        $res = self::upDateSql($sql);
+        return $res;
+    }
+
+    
 }
