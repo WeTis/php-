@@ -392,8 +392,10 @@ VALUES ("'.$params["title"].'","'.$params["authorName"].'","'.$params["abstract"
      * @return array
      */
     public function isHasUser($openId){
-        $sql = 'SELECT openId FROM app_user WHERE openId= "'.$openId.'"';
+        $sql = 'SELECT * FROM app_user WHERE openId= "'.$openId.'"';
         $res = self::getResult($sql);
+//        print_r("ssss");
+//        var_dump($res);
         return $res;
     }
 

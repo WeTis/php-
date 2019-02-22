@@ -15,8 +15,8 @@ $db = new db($phpexcel);
 function wxLogin($db){
 
     $code = $_POST["code"];
-    $userName = $_POST["userName"];
-    $userImg = $_POST["userImg"];
+    $userName = empty($_POST["userName"]) != 1 ? $_POST["userName"] : null;
+    $userImg = empty($_POST["userImg]"]) != 1 ? $_POST["userImg"] : null;
     if(empty($code) != 1){
 
 
@@ -34,12 +34,17 @@ function wxLogin($db){
             );
         }
         // 判断用户是否存在
-        $isExit = IsExitUser($db);
-        if(empty($isExit['openId']) != 1 ){
+        $isExit = IsExitUser($db,$wxInfo["openid"]);
+//        print_r(empty($isExit));
+        if(empty($isExit) != 1 ){
+            $arr = array(
+                'status' => 90000,
+                'mes' => '用户已经存在'
+            );
             // 用户存在
-            if($isExit["hasInfo"] == 1){
+            if($isExit[0]["hasInfo"] == 1){
                 // 有用户信息
-            }elseif ($isExit["hasInfo"] == 2){
+            }elseif ($isExit[0]["hasInfo"] == 2){
                 // 没有用户信息
             }
         }else{
@@ -57,11 +62,11 @@ function wxLogin($db){
                 );
             }
         }
-
-        $addWXuser = $db->updateAppUser($params);
-        if($addWXuser){
-            //
-        }
+        print_r(json_encode($arr));
+//        $addWXuser = $db->updateAppUser($params);
+//        if($addWXuser){
+//            //
+//        }
     }
 
 
@@ -71,11 +76,8 @@ function wxLogin($db){
 // 判断用户是否存在
 function IsExitUser($db,$openid) {
 
-    $params = array(
-        "openId" => $openid
-    );
-    $isExit = $db->isHasUser($params);
-
+    $isExit = $db->isHasUser($openid);
+//    print_r($isExit);
     return $isExit;
 }
 
